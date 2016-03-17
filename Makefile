@@ -22,7 +22,7 @@ CC = gcc
 
 CFLAGS = -Werror -Wextra -Wall -g
 
-LFLAGS = -ltermcap -Llib/ -lft -lftprintf
+LFLAGS = -lncurses -ltermcap -Llib/ -lft -lftprintf
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 
@@ -33,7 +33,6 @@ INC = $(addprefix -I,$(INC_PATH))
 all : $(NAME)
 
 $(NAME) : $(OBJ)
-#	@mkdir lib
 #	make -C libsrcs/libft
 #	make -C libsrcs/ft_printf
 	$(CC) $(LFLAGS) $(INC) -o $@ $^
@@ -52,7 +51,6 @@ fclean: clean
 	rm -fv $(NAME)
 #	make -C libsrcs/libft fclean
 #	make -C libsrcs/ft_printf fclean
-#	@rmdir lib
 
 re: fclean all
 
