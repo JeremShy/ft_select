@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 09:14:58 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/18 15:27:35 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/21 15:26:03 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,8 @@ typedef struct	s_elem
 
 void 			add_new_elem(t_elem **list, char *name);
 void			print_list(t_elem *list);
+int				find_pos(t_elem *list);
+int				my_putchar(int c);
+void			print_select(t_elem *list);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 09:20:07 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/18 15:20:43 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/21 15:34:41 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,15 @@ int			main(int ac, char **av)
 		return (0);
 	i = 1;
 	while(i < ac)
+		add_new_elem(&list, av[i++]);
+	if (find_pos(list) == 0)
 	{
-		add_new_elem(&list, av[i]);
-		i++;
+		ft_putstr("taille trop petite\n");
+		return (0);
 	}
 	print_list(list);
+	print_select(list);
+	while (1);
 }
 
 //tputs(tgoto(tgetstr("cm", NULL), 20, 30), 1, my_putchar);

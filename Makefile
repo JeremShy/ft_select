@@ -6,13 +6,14 @@
 #    By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/08 11:49:18 by jcamhi            #+#    #+#              #
-#    Updated: 2016/03/18 15:19:51 by jcamhi           ###   ########.fr        #
+#    Updated: 2016/03/21 15:19:44 by jcamhi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_NAME = main.c \
 		   list.c \
-		   debug.c
+		   debug.c \
+		   print.c 
 
 OBJ_PATH = ./obj/
 
