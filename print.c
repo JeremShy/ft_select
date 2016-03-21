@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 15:19:31 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/21 15:34:51 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/21 21:14:06 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,11 @@ void	print_select(t_elem *list)
 	while (list)
 	{
 		tputs(tgoto(tgetstr("cm", NULL), list->pos_x, list->pos_y), 1, my_putchar);
+		if (list->underline)
+			tputs(tgetstr("us", NULL), 1, my_putchar);
 		my_putstr(list->name);
+		if (list->underline)
+			tputs(tgetstr("ue", NULL), 1, my_putchar);
 		if (list->next)
 			my_putchar('\n');
 		list = list->next;

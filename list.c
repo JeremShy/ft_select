@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 15:05:05 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/21 17:15:36 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/21 19:57:34 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int			find_pos(t_elem *list)
 	while (list)
 	{
 		l_index = list->id;
-		while (list && current_y < w.ws_row)
+		while (list && current_y < w.ws_row - 1)
 		{
 			list->pos_x = current_x;
 			list->pos_y = current_y;
@@ -59,7 +59,7 @@ int			find_pos(t_elem *list)
 		if (!list)
 			return (1);
 		current_x = current_x + find_max(save, l_index, list->id) + 2;
-		if (current_x > w.ws_col)
+		if (current_x > w.ws_col - 1)
 			return (0);
 		current_y = 0;
 	}

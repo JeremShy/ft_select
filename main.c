@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 09:20:07 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/21 15:34:41 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/21 21:14:39 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,9 @@ int			main(int ac, char **av)
 	t_termios	*def_term;
 	t_elem		*list;
 	int			i;
+	char		buf[4];
+	int			r;
+	int			cursor;
 
 	if ((def_term = init_term()) == NULL)
 		return (0);
@@ -73,7 +76,23 @@ int			main(int ac, char **av)
 	}
 	print_list(list);
 	print_select(list);
-	while (1);
+	cursor = 0;
+	while ((r = read(0, buf, 3)))
+	{
+		buf[r] = '\0';
+		if (buf[0] == 27 && buf[1] == '\0')
+		{
+			tputs(tgetstr("cl", NULL), 1, my_putchar);
+			return (0);
+		}
+		if (buf[0] == 27 && buf[1] == 91 && buf[2] == 66)
+		{
+			(find_elem(list, cursor))->underline = 0;
+			cursor = (find_elem(list, cursor)->next)->id;
+			(find_elem(list, cursor))->underline = 1;
+			print_select(list);
+		}
+	}
 }
 
 //tputs(tgoto(tgetstr("cm", NULL), 20, 30), 1, my_putchar);

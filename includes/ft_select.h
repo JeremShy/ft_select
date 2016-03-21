@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 09:14:58 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/21 15:26:03 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/21 21:04:32 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,6 @@ void			print_list(t_elem *list);
 int				find_pos(t_elem *list);
 int				my_putchar(int c);
 void			print_select(t_elem *list);
+t_elem			*find_elem(t_elem *list, int index);
 
 #endif

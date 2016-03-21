@@ -1,0 +1,9 @@
+key codes : 
+
+Return : 10 - 00 - 00
+Esc    : 27 - 00 - 00
+Espace : 32 - 00 - 66
+Gauche : 27 - 91 - 68
+Haut   : 27 - 91 - 65
+Droite : 27 - 91 - 67
+Bas    : 27 - 91 - 66
