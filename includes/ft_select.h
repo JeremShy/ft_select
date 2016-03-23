@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 09:14:58 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/21 21:04:32 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/22 14:27:08 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct	s_elem
 	int				pos_y;
 	int				id;
 	struct s_elem	*next;
+	struct s_elem	*prec;
 }				t_elem;
 
 void 			add_new_elem(t_elem **list, char *name);
@@ -45,5 +46,6 @@ int				find_pos(t_elem *list);
 int				my_putchar(int c);
 void			print_select(t_elem *list);
 t_elem			*find_elem(t_elem *list, int index);
+t_elem			*delete_elem(t_elem *list, t_elem **modif);
 
 #endif

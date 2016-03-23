@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 15:05:05 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/21 19:57:34 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/22 14:00:01 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int			find_pos(t_elem *list)
 	return (1);
 }
 
-static t_elem	*create_elem(char *name)
+static t_elem	*create_elem(char *name, t_elem *prec)
 {
 	t_elem						*ret;
 	static unsigned long long	id = 0;
@@ -79,6 +79,7 @@ static t_elem	*create_elem(char *name)
 	ret->vid_inv = 0;
 	ret->id = id;
 	id++;
+	ret->prec = prec;
 	ret->next = NULL;
 	return (ret);
 }
@@ -91,11 +92,11 @@ void 			add_new_elem(t_elem **list, char *name)
 		return ;
 	if (!*list)
 	{
-		*list = create_elem(name);
+		*list = create_elem(name, NULL);
 		return ;
 	}
 	ptr = *list;
 	while (ptr->next)
 		ptr = ptr->next;
-	ptr->next = create_elem(name);
+	ptr->next = create_elem(name, ptr);
 }
