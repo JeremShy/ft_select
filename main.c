@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 09:20:07 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/24 15:38:08 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 20:00:30 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@ int			my_putchar(int c)
 		close(fd);
 	write(fd, &c, 1);
 	return (c);
-}
-
-void		fnc(int truc)
-{
-	truc = 2;
-	struct winsize w;
-	ioctl(0, TIOCGWINSZ, &w);
- 
-	ft_printf ("lines %d\n", w.ws_row);
-	ft_printf ("columns %d\n", w.ws_col);
 }
 
 t_termios	*init_term(void)
@@ -58,12 +48,15 @@ t_termios	*init_term(void)
 void		end_prog_with_output(t_elem *list)
 {
 	char				*buff;
-	extern	t_termios	*def_term;
+	t_termios			*def_term;
+	t_elem				*save;
 
+	save = list;
+	def_term = singelton_termios(NULL);
 	tcsetattr(0, TCSADRAIN, def_term);
 	free(def_term);
 	tputs(tgetstr("cl", NULL), 1, my_putchar);
-	tputs(tgetstr("ve", NULL), 1, my_putchar);	
+	tputs(tgetstr("ve", NULL), 1, my_putchar);
 	buff = ft_strdup("");
 	while (list)
 	{
@@ -76,107 +69,34 @@ void		end_prog_with_output(t_elem *list)
 		list = list->next;
 	}
 	ft_putstr(buff);
+	delete_list(save);
 	free(buff);
 	exit(EXIT_SUCCESS);
 }
 
 int			main(int ac, char **av)
 {
-	extern t_termios	*def_term;
-	extern t_elem		*list;
-	int 				i;
-	char				buf[4];
-	int					r;
+	t_elem				*list;
+	int					i;
 	t_elem				*cursor;
 
-	if ((def_term = init_term()) == NULL)
+	if (singelton_termios(init_term()) == NULL)
 		return (0);
 	i = 1;
 	if (ac == 1)
-	{
 		ft_printf("Wrong usage : %s file [...]\n", av[0]);
-		return (0);
-	}
-	while(i < ac)
+	while (i < ac)
 		add_new_elem(&list, av[i++]);
-	if (!list)
-	{
+	if (ac != 1 && !list)
 		ft_printf("Error while creating list.\n");
+	if (!list || ac == 1)
 		return (0);
-	}
 	list->i = find_pos(list);
 	tputs(tgetstr("vi", NULL), 1, my_putchar);
 	signal_handler();
 	cursor = list;
 	cursor->underline = 1;
 	print_select(list);
-	while ((r = read(0, buf, 3)))
-	{
-		buf[r] = '\0';
-		if (buf[0] == 27 && buf[1] == '\0')
-			end_prog_without_output(0);
-		else if (buf[0] == 27 && buf[1] == 91 && buf[2] == 66)
-		{
-			cursor->underline = 0;	
-			cursor = (cursor->next ? cursor->next : list);
-			cursor->underline = 1;
-		}
-		else if (buf[0] == 27 && buf[1] == 91 && buf[2] == 65)
-		{
-			cursor->underline = 0;
-			cursor = (cursor->prec ? cursor->prec : list_end(list));
-			cursor->underline = 1;
-		}
-		else if (buf[0] == 127 && buf[1] == 0)
-		{
-			cursor = delete_elem(cursor, &list);
-			if (!cursor)
-				return (0);
-			list->i = find_pos(list);
-			cursor->underline = 1;
-		}
-		else if (buf[0] == 32 && buf[1] == 0)
-		{
-			cursor->vid_inv = (cursor->vid_inv ? 0 : 1);
-			cursor->underline = 0;
-			cursor = (cursor->next ? cursor->next : list);
-			cursor->underline = 1;
-		}
-		else if (buf[0] == 10 && buf[1] == 0)
-			end_prog_with_output(list);
-		print_select(list);
-	}
+	singelton_list(list);
+	boucle(list, cursor);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 21:01:53 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/24 15:35:40 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 19:55:11 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,16 @@ t_elem	*delete_elem(t_elem *list, t_elem **modif)
 	next = list->next;
 	if (!list->prec)
 	{
-		if(next)
+		if (next)
+		{
 			*modif = next;
+			singelton_list(*modif);
+		}
 		else
 			return (NULL);
 	}
+	if (!next)
+		next = *modif;
 	if (list->prec)
 		(list->prec)->next = list->next;
 	if (list->next)
@@ -56,6 +61,7 @@ t_elem	*list_end(t_elem *list)
 void	delete_list(t_elem *list)
 {
 	t_elem *next;
+
 	while (list)
 	{
 		free(list->name);
@@ -75,42 +81,3 @@ int		is_not_last(t_elem *list)
 	}
 	return (0);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

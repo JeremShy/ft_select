@@ -6,16 +6,20 @@
 #    By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/12/08 11:49:18 by jcamhi            #+#    #+#              #
-#    Updated: 2016/03/24 13:44:36 by jcamhi           ###   ########.fr        #
+#    Updated: 2016/03/24 20:16:34 by jcamhi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 SRC_NAME = main.c \
 		   list.c \
-		   debug.c \
 		   print.c \
 		   list_2.c \
-		   signals.c
+		   signals.c \
+		   list_3.c \
+		   norme_pos.c \
+		   boucle.c \
+		   singelton.c \
+		   norme_signal.c
 
 OBJ_PATH = ./obj/
 

@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/24 13:41:58 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/24 15:11:35 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 20:33:52 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 void		end_prog_without_output(int sig)
 {
-	extern t_termios	*def_term;
-	extern t_elem		*list;
+	t_termios	*def_term;
+	t_elem		*list;
 
+	def_term = singelton_termios(NULL);
+	list = singelton_list(NULL);
 	sig = 0;
 	tcsetattr(0, TCSADRAIN, def_term);
 	free(def_term);
@@ -28,8 +30,9 @@ void		end_prog_without_output(int sig)
 
 void		handle_winch(int sig)
 {
-	extern t_elem *list;
+	t_elem *list;
 
+	list = singelton_list(NULL);
 	sig = 0;
 	list->i = find_pos(list);
 	tputs(tgetstr("cl", NULL), 1, my_putchar);
@@ -38,11 +41,11 @@ void		handle_winch(int sig)
 
 void		sig_pause(int sig)
 {
-	extern t_termios	*def_term;
+	t_termios	*def_term;
 
+	def_term = singelton_termios(NULL);
 	sig = 0;
 	tcsetattr(0, TCSADRAIN, def_term);
-	free(def_term);
 	tputs(tgetstr("ve", NULL), 1, my_putchar);
 	signal(SIGTSTP, SIG_DFL);
 	ioctl(0, TIOCSTI, "\032");
@@ -50,12 +53,17 @@ void		sig_pause(int sig)
 
 void		sig_cont(int sig)
 {
-	extern t_termios	*def_term;
-	extern t_elem		*list;	
+	t_elem		*list;
+	t_termios	*truc;
 
 	sig = 0;
+	list = singelton_list(NULL);
 	signal(SIGTSTP, sig_pause);
-	def_term = init_term();
+	free(singelton_termios(NULL));
+	truc = init_term();
+	if (truc == NULL)
+		exit(0);
+	singelton_termios(truc);
 	tputs(tgetstr("cl", NULL), 1, my_putchar);
 	tputs(tgetstr("vi", NULL), 1, my_putchar);
 	find_pos(list);
@@ -69,54 +77,16 @@ void		signal_handler(void)
 	i = 1;
 	while (i < 28)
 	{
-		if (i !=  SIGKILL && i != SIGSTOP && i != SIGCONT &&
-			i != SIGCHLD && i != SIGTSTP && i != SIGWINCH)
-			signal (i, end_prog_without_output);
+		if (i != SIGKILL && i != SIGSTOP && i != SIGCONT &&
+			i != SIGCHLD && i != SIGTSTP && i != SIGWINCH && i != SIGTTOU)
+			signal(i, end_prog_without_output);
 		else if (i == SIGTSTP)
-					signal(i, sig_pause);
+			signal(i, sig_pause);
 		else if (i == SIGCONT)
-					signal(i, sig_cont);
+			signal(i, sig_cont);
+		else if (i == SIGTTOU)
+			signal(i, sig_ttou);
 		i++;
 	}
 	signal(SIGWINCH, handle_winch);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 15:19:31 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/24 15:12:26 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 19:34:02 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ void	print_select(t_elem *list)
 	}
 	while (list)
 	{
-		tputs(tgoto(tgetstr("cm", NULL), list->pos_x, list->pos_y), 1, my_putchar);
+		tputs(tgoto(tgetstr("cm", NULL), list->pos_x, list->pos_y),
+			1, my_putchar);
 		if (list->underline)
 			tputs(tgetstr("us", NULL), 1, my_putchar);
 		if (list->vid_inv)
@@ -49,5 +50,3 @@ void	print_select(t_elem *list)
 		list = list->next;
 	}
 }
-
-//tputs(tgoto(tgetstr("cm", NULL), 20, 30), 1, my_putchar);

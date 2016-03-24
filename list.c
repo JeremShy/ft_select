@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 15:05:05 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/24 15:25:34 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 19:06:45 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ static int		find_max(t_elem *list, int l_index, int index)
 	{
 		if ((int)ft_strlen(list->name) > max)
 			max = ft_strlen(list->name);
-		list = list->next;		
+		list = list->next;
 	}
 	return (max);
 }
 
-int			ft_verif(t_elem *list, int col)
+int				ft_verif(t_elem *list, int col)
 {
 	while (list)
 	{
@@ -44,7 +44,7 @@ int			ft_verif(t_elem *list, int col)
 	return (1);
 }
 
-int			find_pos(t_elem *list)
+int				find_pos(t_elem *list)
 {
 	int				current_x;
 	int				current_y;
@@ -53,20 +53,12 @@ int			find_pos(t_elem *list)
 	t_elem			*save;
 
 	ioctl(0, TIOCGWINSZ, &w);
-	save = list;
-	current_x = 0;
-	current_y = 0;
-	l_index = 0;
+	save = norme_pos(list, &current_x, &current_y, &l_index);
 	while (list)
 	{
 		l_index = list->id;
 		while (list && current_y < w.ws_row - 1)
-		{
-			list->pos_x = current_x;
-			list->pos_y = current_y;
-			current_y++;
-			list = list->next;
-		}
+			list = norme_pos_2(list, current_x, &current_y);
 		if (!list)
 			return (ft_verif(save, w.ws_col));
 		current_x = current_x + find_max(save, l_index, list->id) + 2;
@@ -95,7 +87,7 @@ static t_elem	*create_elem(char *name, t_elem *prec)
 	return (ret);
 }
 
-void 			add_new_elem(t_elem **list, char *name)
+void			add_new_elem(t_elem **list, char *name)
 {
 	t_elem	*ptr;
 
