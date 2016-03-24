@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 09:20:07 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/24 21:07:29 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 21:10:17 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ int			my_putchar(int c)
 
 	if (!fd)
 		fd = open("/dev/tty", O_RDWR);
+	if (!isatty(fd))
+	{
+		ft_printf("/dev/tty is not a valid tty.\n");
+		exit(EXIT_FAILURE);
+	}
 	if (c == -1)
 		close(fd);
 	write(fd, &c, 1);
