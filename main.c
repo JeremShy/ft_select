@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 09:20:07 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/23 20:29:47 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 15:33:06 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,69 +55,98 @@ t_termios	*init_term(void)
 	return (ret);
 }
 
+void		end_prog_with_output(t_elem *list)
+{
+	char				*buff;
+	char				*cpy;
+	extern	t_termios	*def_term;
+
+	tcsetattr(0, TCSADRAIN, def_term);
+	free(def_term);
+	tputs(tgetstr("cl", NULL), 1, my_putchar);
+	tputs(tgetstr("ve", NULL), 1, my_putchar);	
+	buff = ft_strdup("");
+	while (list)
+	{
+		if (list->vid_inv)
+		{
+			buff = ft_strjoinaf1(buff, list->name);
+			buff = ft_strjoinaf1(buff, " ");
+		}
+		list = list->next;
+	}
+	cpy = ft_strtrim(buff);
+	free(buff);
+	ft_putstr(cpy);
+	free(cpy);
+	exit(EXIT_SUCCESS);
+}
+
 int			main(int ac, char **av)
 {
-	t_termios	*def_term;
-	t_elem		*list;
-	int			i;
-	char		buf[4];
-	int			r;
-	t_elem		*cursor;
+	extern t_termios	*def_term;
+	extern t_elem		*list;
+	int 				i;
+	char				buf[4];
+	int					r;
+	t_elem				*cursor;
 
 	if ((def_term = init_term()) == NULL)
 		return (0);
 	i = 1;
-	while(i < ac)
-		add_new_elem(&list, av[i++]);
-	if (find_pos(list) == 0)
+	if (ac == 1)
 	{
-		ft_putstr("taille trop petite\n");
+		ft_printf("Wrong usage : %s file [...]\n", av[0]);
 		return (0);
 	}
+	while(i < ac)
+		add_new_elem(&list, av[i++]);
+	if (!list)
+	{
+		ft_printf("Error while creating list.\n");
+		return (0);
+	}
+	list->i = find_pos(list);
+	tputs(tgetstr("vi", NULL), 1, my_putchar);
+	signal_handler();
 	cursor = list;
-	if (cursor)
-		cursor->underline = 1;
-	print_list(list);
+	cursor->underline = 1;
 	print_select(list);
 	while ((r = read(0, buf, 3)))
 	{
 		buf[r] = '\0';
 		if (buf[0] == 27 && buf[1] == '\0')
+			end_prog_without_output(0);
+		else if (buf[0] == 27 && buf[1] == 91 && buf[2] == 66)
 		{
-			tputs(tgetstr("cl", NULL), 1, my_putchar);
-			return (0);
-		}
-		if (buf[0] == 27 && buf[1] == 91 && buf[2] == 66)
-		{
-			cursor->underline = 0;
+			cursor->underline = 0;	
 			cursor = (cursor->next ? cursor->next : list);
 			cursor->underline = 1;
 		}
-		if (buf[0] == 27 && buf[1] == 91 && buf[2] == 65)
+		else if (buf[0] == 27 && buf[1] == 91 && buf[2] == 65)
 		{
 			cursor->underline = 0;
-			cursor = cursor->prec;
+			cursor = (cursor->prec ? cursor->prec : list_end(list));
 			cursor->underline = 1;
 		}
-		if (buf[0] == 127 && buf[1] == 0)
+		else if (buf[0] == 127 && buf[1] == 0)
 		{
 			cursor = delete_elem(cursor, &list);
 			if (!cursor)
 				return (0);
-			print_list(list);
-			find_pos(list);
-			print_list(list);
+			list->i = find_pos(list);
 			cursor->underline = 1;
 		}
-		if (buf[0] == 32 && buf[1] == 0)
+		else if (buf[0] == 32 && buf[1] == 0)
 		{
 			cursor->vid_inv = (cursor->vid_inv ? 0 : 1);
 			cursor->underline = 0;
 			cursor = (cursor->next ? cursor->next : list);
 			cursor->underline = 1;
 		}
-		//print_select(list);
-		ft_printf("%d - %d - %d\n", buf[0], buf[1], buf[2]);
+		else if (buf[0] == 10 && buf[1] == 0)
+			end_prog_with_output(list);
+		print_select(list);
 	}
 }
 

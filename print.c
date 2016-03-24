@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 15:19:31 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/23 19:12:07 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 15:12:26 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ void	my_putstr(char *str)
 void	print_select(t_elem *list)
 {
 	tputs(tgetstr("cl", NULL), 1, my_putchar);
+	if (list->i == 0)
+	{
+		my_putstr("Error : Window's size if too small.\n");
+		return ;
+	}
 	while (list)
 	{
 		tputs(tgoto(tgetstr("cm", NULL), list->pos_x, list->pos_y), 1, my_putchar);

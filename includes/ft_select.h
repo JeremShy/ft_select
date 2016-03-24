@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 09:14:58 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/22 14:27:08 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 15:24:18 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 # include <unistd.h>
 # include <signal.h>
 
+struct termios	*def_term;
+struct s_elem	*list;
+
 typedef struct	termios t_termios;
 typedef struct	s_elem
 {
@@ -36,6 +39,7 @@ typedef struct	s_elem
 	int				pos_x;
 	int				pos_y;
 	int				id;
+	int				i;
 	struct s_elem	*next;
 	struct s_elem	*prec;
 }				t_elem;
@@ -47,5 +51,9 @@ int				my_putchar(int c);
 void			print_select(t_elem *list);
 t_elem			*find_elem(t_elem *list, int index);
 t_elem			*delete_elem(t_elem *list, t_elem **modif);
-
+t_elem			*list_end(t_elem *list);
+void			delete_list(t_elem *list);
+void			signal_handler(void);
+void			end_prog_without_output(int sig);
+t_termios		*init_term(void);
 #endif

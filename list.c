@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/18 15:05:05 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/22 14:00:01 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 15:25:34 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,17 @@ static int		find_max(t_elem *list, int l_index, int index)
 	return (max);
 }
 
+int			ft_verif(t_elem *list, int col)
+{
+	while (list)
+	{
+		if ((int)ft_strlen(list->name) + list->pos_x > col)
+			return (0);
+		list = list->next;
+	}
+	return (1);
+}
+
 int			find_pos(t_elem *list)
 {
 	int				current_x;
@@ -57,19 +68,19 @@ int			find_pos(t_elem *list)
 			list = list->next;
 		}
 		if (!list)
-			return (1);
+			return (ft_verif(save, w.ws_col));
 		current_x = current_x + find_max(save, l_index, list->id) + 2;
 		if (current_x > w.ws_col - 1)
 			return (0);
 		current_y = 0;
 	}
-	return (1);
+	return (ft_verif(save, w.ws_col));
 }
 
 static t_elem	*create_elem(char *name, t_elem *prec)
 {
-	t_elem						*ret;
-	static unsigned long long	id = 0;
+	t_elem		*ret;
+	static int	id = 0;
 
 	ret = (t_elem*)malloc(sizeof(t_elem));
 	ret->name = ft_strdup(name);
