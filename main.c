@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 09:20:07 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/24 20:00:30 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 21:07:29 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ t_termios	*init_term(void)
 		return (NULL);
 	if ((name_term = getenv("TERM")) == NULL)
 		return (NULL);
-	tgetent(NULL, name_term);
+	if (tgetent(NULL, name_term) == ERR)
+		return (NULL);
 	return (ret);
 }
 
