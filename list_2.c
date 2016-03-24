@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/21 21:01:53 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/24 13:39:10 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 15:35:40 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,16 @@ void	delete_list(t_elem *list)
 	}
 }
 
-
-
-
-
+int		is_not_last(t_elem *list)
+{
+	while (list)
+	{
+		if (list->vid_inv)
+			return (1);
+		list = list->next;
+	}
+	return (0);
+}
 
 
 

@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 09:20:07 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/24 15:33:06 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 15:38:08 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ t_termios	*init_term(void)
 void		end_prog_with_output(t_elem *list)
 {
 	char				*buff;
-	char				*cpy;
 	extern	t_termios	*def_term;
 
 	tcsetattr(0, TCSADRAIN, def_term);
@@ -71,14 +70,13 @@ void		end_prog_with_output(t_elem *list)
 		if (list->vid_inv)
 		{
 			buff = ft_strjoinaf1(buff, list->name);
-			buff = ft_strjoinaf1(buff, " ");
+			if (is_not_last(list->next))
+				buff = ft_strjoinaf1(buff, " ");
 		}
 		list = list->next;
 	}
-	cpy = ft_strtrim(buff);
+	ft_putstr(buff);
 	free(buff);
-	ft_putstr(cpy);
-	free(cpy);
 	exit(EXIT_SUCCESS);
 }
 

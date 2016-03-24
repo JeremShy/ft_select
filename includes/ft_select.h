@@ -6,7 +6,7 @@
 /*   By: jcamhi <jcamhi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/03/14 09:14:58 by jcamhi            #+#    #+#             */
-/*   Updated: 2016/03/24 15:24:18 by jcamhi           ###   ########.fr       */
+/*   Updated: 2016/03/24 15:35:59 by jcamhi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,5 @@ void			delete_list(t_elem *list);
 void			signal_handler(void);
 void			end_prog_without_output(int sig);
 t_termios		*init_term(void);
+int				is_not_last(t_elem *list);
 #endif
